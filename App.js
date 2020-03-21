@@ -52,9 +52,12 @@ export default function App() {
                              }/>);
   if(todoId){
     const selectedTodo = todos.find(todo => todo.id === todoId);
-    content = <TodoScreen goBack = { () => setTodoId(null)}
-                          todo={selectedTodo}
-    onRemove={removeTodo}/>
+    content = (
+        <TodoScreen
+            goBack={() => setTodoId(null)}
+            todo={selectedTodo}
+            onRemove={removeTodo}
+            />)
   }
   return (
     <View >
