@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, TextInput, Button, Alert} from 'react-native';
+import {View, StyleSheet, TextInput, Alert, Keyboard} from 'react-native';
 import {THEME} from "../theme";
+import { AntDesign} from '@expo/vector-icons'
 
 export const AddTodo = ({onSubmit}) => {
   const [value, setValue] = useState('');
@@ -8,7 +9,8 @@ export const AddTodo = ({onSubmit}) => {
   const pressHandler = () => {
     if(value.trim()) {
       onSubmit(value);
-      setValue('')
+      setValue('');
+      Keyboard.dismiss()
     }else {
       Alert.alert('Введите название дела')
       //error
@@ -25,7 +27,10 @@ export const AddTodo = ({onSubmit}) => {
           autoCorrect={false}
           autoCapitalize="none"
           />
-      <Button title='Добавь' onPress={pressHandler}/>
+      <AntDesign.Button onPress={pressHandler} name="plus">
+        Добавить
+      </AntDesign.Button>
+      {/*<Button title='Добавить' onPress={pressHandler}/>*/}
     </View>
   )
 };
