@@ -28,7 +28,7 @@ export default function App() {
   return (
       <ScreenState>
         <TodoState>
-        <MainLayout/>
+          <MainLayout/>
         </TodoState>
       </ScreenState>
   );

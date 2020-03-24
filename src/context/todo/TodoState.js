@@ -1,4 +1,5 @@
 import React, {useReducer, useContext} from 'react';
+import {Alert} from "react-native";
 import {TodoContext} from './TodoContext'
 import {TodoReducer} from "./todoReducer";
 import {ADD_TODO, REMOVE_TODO, UPDATE_TODO} from "../types";
@@ -18,8 +19,25 @@ export const TodoState = ( {children} ) => {
   };
 
   const removeTodo = id => {
-    dispatch({type: REMOVE_TODO, id})
-    changeScreen(null);
+    const todo = state.todos.find ( t => t.id === id);
+
+
+    Alert.alert(
+        'Удаление элемента',
+        `Вы уверены, что хотите удалить "${todo.title}"?`,
+        [
+          {
+            text: 'Отмена',
+            style: 'cancel',
+          },
+          {text: 'Уадить',
+            onPress: () => {
+              changeScreen(null);
+              dispatch({type: REMOVE_TODO, id});
+            }},
+        ],
+        {cancelable: false}, //закрытие модального окна при клике за его пределами
+    )
   };
 
   const saveTodo = (id, title) => dispatch({type: UPDATE_TODO, id, title});
