@@ -1,0 +1,89 @@
+import React, {useState, useContext} from 'react'
+import {Alert, StyleSheet, View} from "react-native";
+import {Navbar} from "./component/Navbar";
+import {MainScreen} from "./screens/MainScreen";
+import {TodoScreen} from "./screens/TodoScreen";
+import {THEME} from "./theme";
+import {TodoContext} from "./context/todo/TodoContext";
+
+export const MainLayout = () => {
+  const {todos,addTodo, removeTodo, saveTodo} = useContext(TodoContext);
+  const [todoId, setTodoId] = useState(null);
+  // const [todos, setTodos] = useState([]);
+
+  // const addTodo = (title) => {
+  //   const newTodo = {
+  //     id: Date.now().toString(),
+  //     title: title
+  //   };
+  //
+  //   setTodos (prev => [
+  //     ...prev,
+  //     {
+  //       id: Date.now().toString(),
+  //       title: title // если ключ и значение совпадают, то значение можно не писать
+  //     }
+  //   ])
+  // };
+
+  // const removeTodo = id => {
+  //   const todo = todos.find(t => t.id ===id);
+  //   Alert.alert(
+  //       'Удаление элемента',
+  //       `Вы уверены, что хотите удалить "${todo.title}"?`,
+  //       [
+  //         {
+  //           text: 'Отмена',
+  //           style: 'cancel',
+  //         },
+  //         {text: 'Уадить',
+  //           onPress: () => {
+  //             setTodoId(null);
+  //             setTodos(prev => prev.filter(todo => todo.id !== id))
+  //           }},
+  //       ],
+  //       {cancelable: false}, //закрытие модального окна при клике за его пределами
+  //   );
+  // };
+
+  // const  saveTodo = (id, title) => {
+  //   setTodos(old => old.map(todo => {
+  //     if(todo.id === id) {
+  //       todo.title = title
+  //     }
+  //     return todo
+  //   }))
+  // };
+
+  let content = (<MainScreen todos={todos}
+                             addTodo={addTodo}
+                             removeTodo={removeTodo}
+                             openTodo={ id => { setTodoId(id)}
+                             }/>);
+  if(todoId){
+    const selectedTodo = todos.find(todo => todo.id === todoId);
+    content = (
+        <TodoScreen
+            goBack={() => setTodoId(null)}
+            todo={selectedTodo}
+            onRemove={removeTodo}
+            onSave={saveTodo}
+        />)
+  }
+
+  return (
+      <View>
+        <Navbar title="Todo App"/>
+        <View style={styles.container}>
+          {content}
+        </View>
+      </View>
+  )
+};
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 30,
+    paddingVertical:THEME.PADDING_HORIZONTAL
+  },
+});
