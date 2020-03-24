@@ -5,16 +5,16 @@ import {ADD_TODO, REMOVE_TODO, UPDATE_TODO} from "../types";
       ...state,
       todos: [...state.todos, {
         id: Date.now().toString(),
-        title: action.title
+        title
       }]
     } ),
     [REMOVE_TODO]: (state, {id}) => ( {
-      ...state, todos: state.todos.filter( todo => todo.id !== action.id)
+      ...state, todos: state.todos.filter( todo => todo.id !== id)
     } ),
     [UPDATE_TODO]: (state, {id, title}) => ( {
       ...state,todos: state.todos.map( todo => {
-        if(todo.id === action.id) {
-          todo.title = action.title
+        if(todo.id === id) {
+          todo.title = title
         }
         return todo
       }),
