@@ -6,6 +6,7 @@ import {THEME} from "../theme";
 import {TodoContext} from "../context/todo/TodoContext";
 import {ScreenContext} from "../context/screen/screenContext";
 import {AppLoader} from "../component/ui/AppLoader";
+import {AppText} from "../component/ui/AppText";
 
 export const MainScreen = () => {
   const {addTodo, todos, removeTodo, fetchTodos, loading, error} = useContext(TodoContext);
@@ -33,6 +34,13 @@ export const MainScreen = () => {
 
   if(loading) {
     return <AppLoader/>
+  }
+
+  if(error){
+    return <View>
+      <AppText>{error}</AppText>
+    </View>
+
   }
 
   let content = (

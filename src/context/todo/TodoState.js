@@ -38,13 +38,22 @@ export const TodoState = ( {children} ) => {
   };
 
   const fetchTodos = async () => {
-    const response = await fetch('https://rn-todo-b530c.firebaseio.com/todos.json',{
-      method: 'GET',
-      headers: {'Content_Type': 'application/json'}
-    });
-    const data = await response.json();
-    const todos = Object.keys(data).map(key => ({...data[key], id:key}));
-    dispatch({type:FETCH_TODOS, todos})
+    showLoader();
+    clearError();
+    try {
+      const response = await fetch('https://rn-todo-b530c.firebaseio.com/todos.json',{
+        method: 'GET',
+        headers: {'Content_Type': 'application/json'}
+      });
+      const data = await response.json();
+      const todos = Object.keys(data).map(key => ({...data[key], id:key}));
+      dispatch({type:FETCH_TODOS, todos});
+    } catch (e) {
+      showError('Что-то сломалось!');
+      console.log(e)
+    } finally {
+      hideLoader()
+    }
   };
 
   const saveTodo = (id, title) => dispatch({type: UPDATE_TODO, id, title});
