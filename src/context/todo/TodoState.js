@@ -13,12 +13,18 @@ export const TodoState = ( {children} ) => {
   const {changeScreen} = useContext(ScreenContext);
   const [state, dispatch] = useReducer(TodoReducer, initialState);
 
-  const addTodo = title => {
-    dispatch({type: ADD_TODO, title: title})
+  const addTodo = async title => {
+    const response = await fetch('https://rn-todo-b530c.firebaseio.com/todos.json',{
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({title})
+    });
+    const data = await response.json();
+    dispatch({type: ADD_TODO, title: title, id: data.name})
   };
 
   const removeTodo = id => {
-    dispatch({type: REMOVE_TODO, id})
+    dispatch({type: REMOVE_TODO, id});
     changeScreen(null);
   };
 
@@ -30,7 +36,7 @@ export const TodoState = ( {children} ) => {
 
   const showError = (error) => dispatch( {type: SHOW_ERROR});
 
-  const clearError = (error) => dispatch( {type: CLEAR_ERROR});
+  const clearError = () => dispatch( {type: CLEAR_ERROR});
 
   return (
     <TodoContext.Provider
