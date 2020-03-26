@@ -56,7 +56,14 @@ export const TodoState = ( {children} ) => {
     }
   };
 
-  const saveTodo = (id, title) => dispatch({type: UPDATE_TODO, id, title});
+  const saveTodo =async (id, title) => {
+    await fetch(`https://rn-todo-b530c.firebaseio.com/${id}.json`, {
+      method: 'PATCH', // PATCH используется когда нужно изменить часть элемента, PUT - изменить весь объект
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({title})
+    });
+    dispatch({type: UPDATE_TODO, id, title})
+  };
 
   const showLoader = () => dispatch({type: SHOW_LOADER});
 
