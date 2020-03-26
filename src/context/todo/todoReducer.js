@@ -1,4 +1,4 @@
-import {ADD_TODO, CLEAR_ERROR, FETCH_TODOS, HIDE_LOADER, REMOVE_TODO, SHOW_ERROR, UPDATE_TODO} from "../types";
+import {ADD_TODO, CLEAR_ERROR, FETCH_TODOS, HIDE_LOADER, REMOVE_TODO, SHOW_ERROR, UPDATE_TODO, SHOW_LOADER, CHANGE_SCREEN} from "../types";
 
   const handlers = {
     [ADD_TODO]: (state, {title}) => ( {

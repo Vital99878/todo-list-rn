@@ -38,7 +38,8 @@ export const TodoState = ( {children} ) => {
           todos: state.todos,
           addTodo,
           removeTodo,
-          saveTodo}}
+          saveTodo,
+          showLoader}}
     >
       {children}
     </TodoContext.Provider>
