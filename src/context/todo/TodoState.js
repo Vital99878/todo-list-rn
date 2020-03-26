@@ -12,6 +12,7 @@ import {
   UPDATE_TODO
 } from "../types";
 import {ScreenContext} from "../screen/screenContext";
+import {Alert} from "react-native";
 
 export const TodoState = ( {children} ) => {
   const initialState = {
@@ -33,8 +34,32 @@ export const TodoState = ( {children} ) => {
   };
 
   const removeTodo = id => {
-    dispatch({type: REMOVE_TODO, id});
-    changeScreen(null);
+    const todo = state.todos.find(t => t.id ===id);
+    Alert.alert(
+        'Удаление элемента',
+        `Вы уверены, что хотите удалить "${todo.title}"?`,
+        [
+          {
+            text: 'Отмена',
+            style: 'Cancel',
+          },
+          {
+            text: 'Удалить',
+            style: 'destructive',
+            onPress:async () => {
+              changeScreen(null);
+              await fetch(
+                  `https://rn-todo-b530c.firebaseio.com/todos/${id}.json`,
+                  {
+                        method: 'DELETE',
+                        headers: {'Content-Type': 'application/json'}
+                      });
+              dispatch({type: REMOVE_TODO, id});
+            }
+          }
+        ],
+        {cancelable: false}
+    );
   };
 
   const fetchTodos = async () => {
@@ -56,8 +81,8 @@ export const TodoState = ( {children} ) => {
     }
   };
 
-  const saveTodo =async (id, title) => {
-    await fetch(`https://rn-todo-b530c.firebaseio.com/${id}.json`, {
+  const saveTodo = async (id, title) => {
+    await fetch(`https://rn-todo-b530c.firebaseio.com/todos/${id}.json`, {
       method: 'PATCH', // PATCH используется когда нужно изменить часть элемента, PUT - изменить весь объект
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({title})
